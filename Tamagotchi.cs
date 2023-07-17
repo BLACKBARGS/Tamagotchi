@@ -13,6 +13,8 @@ namespace TamagotchiGame
         private int energia;
         private int saude;
         private int taxaEnvelhecimento;
+        private int ciclos;
+        private int inteligencia;
 
         public Tamagotchi(string nome)
         {
@@ -23,9 +25,16 @@ namespace TamagotchiGame
             idade = 0;
             energia = 100;
             saude = 100;
-            taxaEnvelhecimento = 1; // Defina a taxa de envelhecimento desejada
+            taxaEnvelhecimento = 1;
+            ciclos = 0;
+            inteligencia = 50;
         }
-
+        public void AumentarInteligencia()
+        {
+            inteligencia += 10;
+            if (inteligencia > 100)
+                inteligencia = 100;
+        } 
         public void Alimentar()
         {
             fome += 20;
@@ -36,7 +45,6 @@ namespace TamagotchiGame
             if (energia < 0)
                 energia = 0;
         }
-
         public void DarCarinho()
         {
             felicidade += 30;
@@ -46,7 +54,6 @@ namespace TamagotchiGame
             if (energia < 0)
                 energia = 0;
         }
-
         public void Brincar()
         {
             alegria += 20;
@@ -56,20 +63,27 @@ namespace TamagotchiGame
             if (energia < 0)
                 energia = 0;
         }
-
         public void Dormir()
         {
             energia = 100;
+        }  
+        public void DarRemedio()
+        {
+            saude += 20;
+            if (saude > 100)
+                saude = 100;
+            energia -= 2;
+            if (energia < 0)
+                energia = 0;
         }
-
         public void Envelhecer()
         {
-            if (idade % taxaEnvelhecimento == 0)
+            ciclos++;
+            if (ciclos % taxaEnvelhecimento == 0)
             {
                 idade++;
             }
         }
-
         public void AtualizarEstado()
         {
             fome -= 1;
@@ -87,23 +101,43 @@ namespace TamagotchiGame
 
             VerificarSaude();
         }
-
+        public bool EstaTriste()
+        {
+            return fome < 30;
+        }
+        public bool EstaEntediado()
+        {
+            return felicidade < 30;
+        }
+        public bool EstaDoente()
+        {
+            return saude < 30;
+        }
+        public bool EstaCansado()
+        {
+            return energia < 30;
+        }
+        public bool VerificarMorte()
+        {
+            return fome <= 0 || felicidade <= 0 || alegria <= 0 || energia <= 0 || saude <= 0;
+        }
         public void VerificarSaude()
         {
-            if (fome <= 30 || felicidade <= 30 || alegria <= 30 || energia <= 30)
-            {
-                saude -= 10;
-                if (saude < 0)
-                    saude = 0;
-            }
-            else if (fome >= 80 && felicidade >= 80 && alegria >= 80 && energia >= 80)
+            int somaAtributos = fome + felicidade + alegria + energia;
+
+            if (somaAtributos >= 320)
             {
                 saude += 10;
                 if (saude > 100)
                     saude = 100;
             }
+            else
+            {
+                saude -= 10;
+                if (saude < 0)
+                    saude = 0;
+            }
         }
-
         public void ExibirEstado()
         {
             Console.WriteLine("Nome: " + nome);
@@ -113,8 +147,8 @@ namespace TamagotchiGame
             Console.WriteLine("Saúde: " + saude);
             Console.WriteLine("Alegria: " + alegria);
             Console.WriteLine("Energia: " + energia);
+            Console.WriteLine("Inteligência: " + inteligencia);
         }
-
         public void ExibirTamagotchi()
         {
             Console.WriteLine(@"
@@ -127,28 +161,7 @@ namespace TamagotchiGame
            V   V
             ");
         }
-
-        public bool EstaTriste()
-        {
-            return fome < 30;
-        }
-
-        public bool EstaEntediado()
-        {
-            return felicidade < 30;
-        }
-
-        public bool EstaCansado()
-        {
-            return energia < 30;
-        }
-
-        public bool VerificarMorte()
-        {
-            return fome <= 0 || felicidade <= 0 || alegria <= 0 || energia <= 0;
-        }
     }
-
     class Program
     {
         static void Main()
@@ -171,7 +184,7 @@ namespace TamagotchiGame
                 {
                     tamagotchi.AtualizarEstado();
                     tamagotchi.Envelhecer();
-                    Thread.Sleep(1000);
+                    Thread.Sleep(10000);
                 }
             });
             threadAtualizacao.Start();
@@ -190,6 +203,8 @@ namespace TamagotchiGame
 
                 if (tamagotchi.EstaCansado())
                     Console.WriteLine("Seu Tamagotchi está cansado!");
+                if( tamagotchi.EstaDoente())
+                    Console.WriteLine("Seu Tamagotchi está doente");
 
                 ExibirMenu();
                 string? opcao = Console.ReadLine();
@@ -222,8 +237,18 @@ namespace TamagotchiGame
                     case "5":
                         tamagotchi.AtualizarEstado();
                         break;
-
+                    
                     case "6":
+                        tamagotchi.DarRemedio();
+                        Console.WriteLine("Seu Tomou Remédio!");
+                        break;
+
+                    case "7":
+                        tamagotchi.AumentarInteligencia();
+                        Console.WriteLine("A inteligência do Tamagotchi aumentou!");
+                        break;
+
+                    case "8":
                         jogando = false;
                         break;
 
@@ -242,7 +267,6 @@ namespace TamagotchiGame
 
             Console.WriteLine("Obrigado por jogar o Tamagotchi!");
         }
-
         static void ExibirMenu()
         {
             Console.WriteLine();
@@ -252,7 +276,9 @@ namespace TamagotchiGame
             Console.WriteLine("3. Brincar");
             Console.WriteLine("4. Dormir");
             Console.WriteLine("5. Atualizar");
-            Console.WriteLine("6. Sair");
+            Console.WriteLine("6. Dar Remedio");
+            Console.WriteLine("7. Aumentar Inteligência");
+            Console.WriteLine("8. Sair");
             Console.Write("Opção: ");
         }
     }
