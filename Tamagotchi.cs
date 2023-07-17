@@ -3,7 +3,6 @@ using System.Threading;
 
 namespace TamagotchiGame
 {
-
     class Tamagotchi
     {
         private string nome;
@@ -12,15 +11,19 @@ namespace TamagotchiGame
         private int alegria;
         private int idade;
         private int energia;
+        private int saude;
+        private int taxaEnvelhecimento;
 
         public Tamagotchi(string nome)
         {
             this.nome = nome;
-            fome = 0;
-            felicidade = 0;
-            alegria = 0;
+            fome = 100;
+            felicidade = 100;
+            alegria = 100;
             idade = 0;
             energia = 100;
+            saude = 100;
+            taxaEnvelhecimento = 1; // Defina a taxa de envelhecimento desejada
         }
 
         public void Alimentar()
@@ -39,7 +42,6 @@ namespace TamagotchiGame
             felicidade += 30;
             if (felicidade > 100)
                 felicidade = 100;
-
             energia -= 1;
             if (energia < 0)
                 energia = 0;
@@ -50,7 +52,6 @@ namespace TamagotchiGame
             alegria += 20;
             if (alegria > 100)
                 alegria = 100;
-
             energia -= 2;
             if (energia < 0)
                 energia = 0;
@@ -63,7 +64,10 @@ namespace TamagotchiGame
 
         public void Envelhecer()
         {
-            idade++;
+            if (idade % taxaEnvelhecimento == 0)
+            {
+                idade++;
+            }
         }
 
         public void AtualizarEstado()
@@ -71,18 +75,33 @@ namespace TamagotchiGame
             fome -= 1;
             if (fome < 0)
                 fome = 0;
-
             felicidade -= 1;
             if (felicidade < 0)
                 felicidade = 0;
-
             alegria -= 1;
             if (alegria < 0)
                 alegria = 0;
-
             energia -= 1;
             if (energia < 0)
                 energia = 0;
+
+            VerificarSaude();
+        }
+
+        public void VerificarSaude()
+        {
+            if (fome <= 30 || felicidade <= 30 || alegria <= 30 || energia <= 30)
+            {
+                saude -= 10;
+                if (saude < 0)
+                    saude = 0;
+            }
+            else if (fome >= 80 && felicidade >= 80 && alegria >= 80 && energia >= 80)
+            {
+                saude += 10;
+                if (saude > 100)
+                    saude = 100;
+            }
         }
 
         public void ExibirEstado()
@@ -91,6 +110,7 @@ namespace TamagotchiGame
             Console.WriteLine("Idade: " + idade);
             Console.WriteLine("Fome: " + fome);
             Console.WriteLine("Felicidade: " + felicidade);
+            Console.WriteLine("Saúde: " + saude);
             Console.WriteLine("Alegria: " + alegria);
             Console.WriteLine("Energia: " + energia);
         }
@@ -98,14 +118,14 @@ namespace TamagotchiGame
         public void ExibirTamagotchi()
         {
             Console.WriteLine(@"
-      .^._.^.
-      | @ @ |
-     ( '---' )
-    .'___V___'.
-    | /     \ |
-      \ /-\ /
-       V   V
-        ");
+          .^._.^.
+          | @ @ |
+         ( '---' )
+        .'___V___'.
+        | /     \ |
+          \ /-\ /
+           V   V
+            ");
         }
 
         public bool EstaTriste()
@@ -122,6 +142,11 @@ namespace TamagotchiGame
         {
             return energia < 30;
         }
+
+        public bool VerificarMorte()
+        {
+            return fome <= 0 || felicidade <= 0 || alegria <= 0 || energia <= 0;
+        }
     }
 
     class Program
@@ -131,7 +156,6 @@ namespace TamagotchiGame
             Console.WriteLine("Bem-vindo ao Tamagotchi!");
             Console.Write("Digite o nome do seu Tamagotchi: ");
             string? nome = Console.ReadLine();
-
             if (string.IsNullOrEmpty(nome))
             {
                 Console.WriteLine("Nome inválido. O Tamagotchi não pode ser criado.");
@@ -146,10 +170,12 @@ namespace TamagotchiGame
                 while (jogando)
                 {
                     tamagotchi.AtualizarEstado();
+                    tamagotchi.Envelhecer();
                     Thread.Sleep(1000);
                 }
             });
             threadAtualizacao.Start();
+
             while (jogando)
             {
                 Console.Clear();
@@ -165,15 +191,7 @@ namespace TamagotchiGame
                 if (tamagotchi.EstaCansado())
                     Console.WriteLine("Seu Tamagotchi está cansado!");
 
-                Console.WriteLine();
-                Console.WriteLine("Escolha uma ação:");
-                Console.WriteLine("1. Alimentar");
-                Console.WriteLine("2. Dar carinho");
-                Console.WriteLine("3. Brincar");
-                Console.WriteLine("4. Dormir");
-                Console.WriteLine("5. Atualizar");
-                Console.WriteLine("6. Sair");
-                Console.Write("Opção: ");
+                ExibirMenu();
                 string? opcao = Console.ReadLine();
 
                 tamagotchi.Envelhecer();
@@ -205,7 +223,6 @@ namespace TamagotchiGame
                         tamagotchi.AtualizarEstado();
                         break;
 
-
                     case "6":
                         jogando = false;
                         break;
@@ -215,11 +232,28 @@ namespace TamagotchiGame
                         break;
                 }
 
-                Thread.Sleep(1000); // Aguarda 1 segundo antes de atualizar o estado novamente
+                if (tamagotchi.VerificarMorte())
+                {
+                    Console.WriteLine("Seu Tamagotchi morreu!");
+                    jogando = false;
+                }
             }
             threadAtualizacao.Join();
 
             Console.WriteLine("Obrigado por jogar o Tamagotchi!");
+        }
+
+        static void ExibirMenu()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Escolha uma ação:");
+            Console.WriteLine("1. Alimentar");
+            Console.WriteLine("2. Dar carinho");
+            Console.WriteLine("3. Brincar");
+            Console.WriteLine("4. Dormir");
+            Console.WriteLine("5. Atualizar");
+            Console.WriteLine("6. Sair");
+            Console.Write("Opção: ");
         }
     }
 }
