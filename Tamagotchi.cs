@@ -31,21 +31,27 @@ class Tamagotchi
     private bool estaMorto;
 
     private const string TamagotchiVivoAscii = @"
-    /  \.-"" ""-./  \.
-     \    -   -    /
-      |   o   o   |
-      \  .-'''-.  /
-       '-\__Y__/-'
-          `---`
+
+      /\           /\
+     /  \.-"" ""-./  \
+      \    -   -    /
+      |    o   o    |
+      \   .-'''-.   /
+        '-\__Y__/-'
+           `---`
+        
         ";
 
     private const string TamagotchiMortoAscii = @"
-    /  \.-"" ""-./  \.
-     \    -   -    /
-      |   X   X   |
-      \  .-'''-.  /
-       '-\__Y__/-'
-          `---`
+
+      /\           /\
+     /  \.-"" ""-./  \
+      \    -   -    /
+       |   X   X   |
+       \  .-'''-.  /
+        '-\__Y__/-'
+           `---`
+        
         ";
 
     public Tamagotchi(string nome)
@@ -157,109 +163,108 @@ class Tamagotchi
             }
         }
 
-        public void AtualizarEstado()
+    public void AtualizarEstado()
+    {
+        if (!estaMorto)
         {
-            if (!estaMorto)
-            {
-                fome -= 1;
-                if (fome < 0)
-                    fome = 0;
+            fome -= 1;
+            if (fome < 0)
+                fome = 0;
 
-                felicidade -= 1;
-                if (felicidade < 0)
-                    felicidade = 0;
+            felicidade -= 1;
+            if (felicidade < 0)
+                felicidade = 0;
 
-                alegria -= 1;
-                if (alegria < 0)
-                    alegria = 0;
+            alegria -= 1;
+            if (alegria < 0)
+                alegria = 0;
 
-                energia -= 1;
-                if (energia < 0)
-                    energia = 0;
+            energia -= 1;
+            if (energia < 0)
+                energia = 0;
 
-                VerificarSaude();
+            VerificarSaude();
                 
-                if (VerificarMorte())
-                {
-                    estaMorto = true;
-                    timerAtualizacao?.Stop();
-                }
+            if (VerificarMorte())
+            {
+                estaMorto = true;
+                timerAtualizacao?.Stop();
+            }
                 
-            }
-        }
-
-        public bool EstaTriste()
-        {
-            return fome < 30;
-        }
-
-        public bool EstaEntediado()
-        {
-            return felicidade < 30;
-        }
-
-        public bool EstaDoente()
-        {
-            return saude < 30;
-        }
-
-        public bool EstaCansado()
-        {
-            return energia < 30;
-        }
-
-        public bool VerificarMorte()
-        {
-            return fome <= 0 || felicidade <= 0 || alegria <= 0 || energia <= 0 || saude <= 0;
-        }
-
-        public void VerificarSaude()
-        {
-            int somaAtributos = fome + felicidade + alegria + energia;
-
-            if (somaAtributos >= 320)
-            {
-                saude += 10;
-                if (saude > 100)
-                    saude = 100;
-            }
-            else
-            {
-                saude -= 10;
-                if (saude < 0)
-                    saude = 0;
-            }
-        }
-
-        public void ExibirEstado()
-        {
-            Console.WriteLine("Nome: " + nome);
-            Console.WriteLine("Idade: " + idade);
-            Console.WriteLine("Fome: " + fome);
-            Console.WriteLine("Felicidade: " + felicidade);
-            Console.WriteLine("Saúde: " + saude);
-            Console.WriteLine("Alegria: " + alegria);
-            Console.WriteLine("Energia: " + energia);
-            Console.WriteLine("Inteligência: " + inteligencia);
-        }
-
-        public void ExibirTamagotchi()
-        {
-            if (estaMorto)
-                Console.WriteLine(TamagotchiMortoAscii);
-            else
-                Console.WriteLine(TamagotchiVivoAscii);
         }
     }
 
-    class Program
+    public bool EstaTriste()
     {
-        static void Main()
+        return fome < 30;
+    }
+
+    public bool EstaEntediado()
+    {
+        return felicidade < 30;
+    }
+
+    public bool EstaDoente()
+    {
+        return saude < 30;
+    }
+
+    public bool EstaCansado()
+    {
+        return energia < 30;
+    }
+
+    public bool VerificarMorte()
+    {
+        return fome <= 0 || felicidade <= 0 || alegria <= 0 || energia <= 0 || saude <= 0;
+    }
+
+    public void VerificarSaude()
+    {
+        int somaAtributos = fome + felicidade + alegria + energia;
+
+        if (somaAtributos >= 320)
         {
-            Console.WriteLine("Bem-vindo ao Tamagotchi!");
-            Console.Write("Digite o nome do seu Tamagotchi: ");
-            string? nome = Console.ReadLine();
-            if (string.IsNullOrEmpty(nome))
+            saude += 10;
+            if (saude > 100)
+                saude = 100;
+        }
+        else
+        {
+            saude -= 10;
+            if (saude < 0)
+                saude = 0;
+        }
+    }
+
+    public void ExibirEstado()
+    {
+        Console.WriteLine("Nome: " + nome);
+        Console.WriteLine("Idade: " + idade);
+        Console.WriteLine("Fome: " + fome);
+        Console.WriteLine("Felicidade: " + felicidade);
+        Console.WriteLine("Saúde: " + saude);
+        Console.WriteLine("Alegria: " + alegria);
+        Console.WriteLine("Energia: " + energia);
+        Console.WriteLine("Inteligência: " + inteligencia);
+    }
+
+    public void ExibirTamagotchi()
+    {
+        if (estaMorto)
+            Console.WriteLine(TamagotchiMortoAscii);
+        else
+            Console.WriteLine(TamagotchiVivoAscii);
+    }
+}
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Bem-vindo ao Tamagotchi!");
+        Console.Write("Digite o nome do seu Tamagotchi: ");
+        string? nome = Console.ReadLine();
+        if (string.IsNullOrEmpty(nome))
             {
                 Console.WriteLine("Nome inválido. O Tamagotchi não pode ser criado.");
                 return; // Sai do programa se o nome for inválido
