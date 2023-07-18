@@ -1,8 +1,9 @@
 using System;
 using System.Timers;
 using Timer = System.Timers.Timer;
+namespace TamagotchiMain;
 
-class Tamagotchi
+class Tamagotchi 
 {
     public string Nome { get; private set; }
     public int Fome { get; private set; }
