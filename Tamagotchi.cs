@@ -164,47 +164,49 @@ class Tamagotchi
         }
     }
 
-        public void ExibirEstado()
-        {
-            Console.WriteLine("Nome: " + nome);
-            Console.WriteLine("Idade: " + idade);
-            Console.WriteLine("Fome: " + fome);
-            Console.WriteLine("Felicidade: " + felicidade);
-            Console.WriteLine("Saúde: " + saude);
-            Console.WriteLine("Alegria: " + alegria);
-            Console.WriteLine("Energia: " + energia);
-            Console.WriteLine("Inteligência: " + inteligencia);
-        }
-        public void ExibirTamagotchi()
-        {
-            Console.WriteLine(@"
-          .^._.^.
-          | @ @ |
-         ( '---' )
-        .'___V___'.
-        | /     \ |
-          \ /-\ /
-           V   V
-            ");
-        }
-    }
-    class Program
+    public void ExibirEstado()
     {
-        static void Main()
+        Console.WriteLine("Nome: " + nome);
+        Console.WriteLine("Idade: " + idade);
+        Console.WriteLine("Fome: " + fome);
+        Console.WriteLine("Felicidade: " + felicidade);
+        Console.WriteLine("Saúde: " + saude);
+        Console.WriteLine("Alegria: " + alegria);
+        Console.WriteLine("Energia: " + energia);
+        Console.WriteLine("Inteligência: " + inteligencia);
+    }
+
+    public void ExibirTamagotchi()
+    {
+        Console.WriteLine(@"
+      .^._.^.
+      | @ @ |
+     ( '---' )
+    .'___V___'.
+    | /     \ |
+      \ /-\ /
+       V   V
+        ");
+    }
+
+}
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Bem-vindo ao Tamagotchi!");
+        Console.Write("Digite o nome do seu Tamagotchi: ");
+        string? nome = Console.ReadLine();
+        if (string.IsNullOrEmpty(nome))
         {
-            Console.WriteLine("Bem-vindo ao Tamagotchi!");
-            Console.Write("Digite o nome do seu Tamagotchi: ");
-            string? nome = Console.ReadLine();
-            if (string.IsNullOrEmpty(nome))
-            {
-                Console.WriteLine("Nome inválido. O Tamagotchi não pode ser criado.");
-                return; // Sai do programa se o nome for inválido
-            }
+            Console.WriteLine("Nome inválido. O Tamagotchi não pode ser criado.");
+            return; // Sai do programa se o nome for inválido
+        }
 
-            Tamagotchi tamagotchi = new Tamagotchi(nome);
+        Tamagotchi tamagotchi = new Tamagotchi(nome);
 
-            bool jogando = true;
-            Thread threadAtualizacao = new Thread(() =>
+        bool jogando = true;
+        Thread threadAtualizacao = new Thread(() =>
             {
                 while (jogando)
                 {
@@ -213,98 +215,99 @@ class Tamagotchi
                     //Thread.Sleep(10000);
                 }
             });
-            threadAtualizacao.Start();
+        threadAtualizacao.Start();
 
-            while (jogando)
-            {
-                Console.Clear();
-                tamagotchi.ExibirTamagotchi();
-                tamagotchi.ExibirEstado();
-
-                if (tamagotchi.EstaTriste())
-                    Console.WriteLine("Seu Tamagotchi está triste!");
-
-                if (tamagotchi.EstaEntediado())
-                    Console.WriteLine("Seu Tamagotchi está entediado!");
-
-                if (tamagotchi.EstaCansado())
-                    Console.WriteLine("Seu Tamagotchi está cansado!");
-                if( tamagotchi.EstaDoente())
-                    Console.WriteLine("Seu Tamagotchi está doente");
-
-                ExibirMenu();
-                string? opcao = Console.ReadLine();
-
-                tamagotchi.Envelhecer();
-                tamagotchi.AtualizarEstado();
-
-                switch (opcao)
-                {
-                    case "1":
-                        tamagotchi.Alimentar();
-                        Console.WriteLine("Você alimentou o Tamagotchi!");
-                        break;
-
-                    case "2":
-                        tamagotchi.DarCarinho();
-                        Console.WriteLine("Você deu carinho ao Tamagotchi!");
-                        break;
-
-                    case "3":
-                        tamagotchi.Brincar();
-                        Console.WriteLine("Você brincou com o Tamagotchi!");
-                        break;
-
-                    case "4":
-                        tamagotchi.Dormir();
-                        Console.WriteLine("Seu Tamagotchi dormiu e recuperou a energia!");
-                        break;
-
-                    case "5":
-                        tamagotchi.AtualizarEstado();
-                        break;
-                    
-                    case "6":
-                        tamagotchi.DarRemedio();
-                        Console.WriteLine("Seu Tomou Remédio!");
-                        break;
-
-                    case "7":
-                        tamagotchi.AumentarInteligencia();
-                        Console.WriteLine("A inteligência do Tamagotchi aumentou!");
-                        break;
-
-                    case "8":
-                        jogando = false;
-                        break;
-
-                    default:
-                        Console.WriteLine("Opção inválida!");
-                        break;
-                }
-
-                if (tamagotchi.VerificarMorte())
-                {
-                    Console.WriteLine("Seu Tamagotchi morreu!");
-                    jogando = false;
-                }
-            }
-            threadAtualizacao.Join();
-
-            Console.WriteLine("Obrigado por jogar o Tamagotchi!");
-        }
-        static void ExibirMenu()
+        while (jogando)
         {
-            Console.WriteLine();
-            Console.WriteLine("Escolha uma ação:");
-            Console.WriteLine("1. Alimentar");
-            Console.WriteLine("2. Dar carinho");
-            Console.WriteLine("3. Brincar");
-            Console.WriteLine("4. Dormir");
-            Console.WriteLine("5. Atualizar");
-            Console.WriteLine("6. Dar Remedio");
-            Console.WriteLine("7. Aumentar Inteligência");
-            Console.WriteLine("8. Sair");
-            Console.Write("Opção: ");
+            Console.Clear();
+            tamagotchi.ExibirTamagotchi();
+            tamagotchi.ExibirEstado();
+
+            if (tamagotchi.EstaTriste())
+                Console.WriteLine("Seu Tamagotchi está triste!");
+
+            if (tamagotchi.EstaEntediado())
+                Console.WriteLine("Seu Tamagotchi está entediado!");
+
+            if (tamagotchi.EstaCansado())
+                Console.WriteLine("Seu Tamagotchi está cansado!");
+            if( tamagotchi.EstaDoente())
+                Console.WriteLine("Seu Tamagotchi está doente");
+
+            ExibirMenu();
+            string? opcao = Console.ReadLine();
+
+            tamagotchi.Envelhecer();
+            tamagotchi.AtualizarEstado();
+
+            switch (opcao)
+            {
+                case "1":
+                    tamagotchi.Alimentar();
+                    Console.WriteLine("Você alimentou o Tamagotchi!");
+                break;
+
+                case "2":
+                    tamagotchi.DarCarinho();
+                    Console.WriteLine("Você deu carinho ao Tamagotchi!");
+                break;
+
+                case "3":
+                    tamagotchi.Brincar();
+                    Console.WriteLine("Você brincou com o Tamagotchi!");
+                break;
+
+                case "4":
+                    tamagotchi.Dormir();
+                    Console.WriteLine("Seu Tamagotchi dormiu e recuperou a energia!");
+                break;
+
+                case "5":
+                    tamagotchi.AtualizarEstado();
+                break;
+                    
+                case "6":
+                    tamagotchi.DarRemedio();
+                    Console.WriteLine("Seu Tomou Remédio!");
+                break;
+
+                case "7":
+                    tamagotchi.AumentarInteligencia();
+                    Console.WriteLine("A inteligência do Tamagotchi aumentou!");
+                break;
+
+                case "8":
+                    jogando = false;
+                break;
+
+                default:
+                    Console.WriteLine("Opção inválida!");
+                break;
+            }
+
+            if (tamagotchi.VerificarMorte())
+            {
+                Console.WriteLine("Seu Tamagotchi morreu!");
+                jogando = false;
+            }
         }
+        threadAtualizacao.Join();
+
+        Console.WriteLine("Obrigado por jogar o Tamagotchi!");
     }
+    static void ExibirMenu()
+    {
+        Console.WriteLine();
+        Console.WriteLine("Escolha uma ação:");
+        Console.WriteLine("1. Alimentar");
+        Console.WriteLine("2. Dar carinho");
+        Console.WriteLine("3. Brincar");
+        Console.WriteLine("4. Dormir");
+        Console.WriteLine("5. Atualizar");
+        Console.WriteLine("6. Dar Remedio");
+        Console.WriteLine("7. Aumentar Inteligência");
+        Console.WriteLine("8. Sair");
+        Console.Write("Opção: ");
+    }
+
+}
