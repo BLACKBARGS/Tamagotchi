@@ -1,41 +1,44 @@
 using System;
 using System.Threading;
 
-namespace TamagotchiGame
-{
-    class Tamagotchi
-    {
-        private string nome;
-        private int fome;
-        private int felicidade;
-        private int alegria;
-        private int idade;
-        private int energia;
-        private int saude;
-        private int taxaEnvelhecimento;
-        private int ciclos;
-        private int inteligencia;
+namespace TamagotchiGame;
 
-        public Tamagotchi(string nome)
-        {
-            this.nome = nome;
-            fome = 100;
-            felicidade = 100;
-            alegria = 100;
-            idade = 0;
-            energia = 100;
-            saude = 100;
-            taxaEnvelhecimento = 1;
-            ciclos = 0;
-            inteligencia = 50;
-        }
-        public void AumentarInteligencia()
-        {
-            inteligencia += 10;
-            if (inteligencia > 100)
-                inteligencia = 100;
-        } 
-        public void Alimentar()
+class Tamagotchi
+{
+    private string nome;
+    private int fome;
+    private int felicidade;
+    private int alegria;
+    private int idade;
+    private int energia;
+    private int saude;
+    private int taxaEnvelhecimento;
+    private int ciclos;
+    private int inteligencia;
+
+
+    public Tamagotchi(string nome)
+    {
+        this.nome = nome;
+        fome = 100;
+        felicidade = 100;
+        alegria = 100;
+        idade = 0;
+        energia = 100;
+        saude = 100;
+        taxaEnvelhecimento = 1;
+        ciclos = 0;
+        inteligencia = 50;
+    }
+
+    public void AumentarInteligencia()
+    {
+        inteligencia += 10;
+        if (inteligencia > 100)
+            inteligencia = 100;
+    }
+
+    public void Alimentar()
         {
             fome += 20;
             if (fome > 100)
