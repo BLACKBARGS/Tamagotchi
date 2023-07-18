@@ -1,4 +1,3 @@
-
 using System;
 using System.Timers;
 using Timer = System.Timers.Timer;
@@ -12,7 +11,7 @@ class Tamagotchi
     public int Idade { get; private set; }
     public int Energia { get; private set; }
     public int Saude { get; private set; }
-    public int Inteligencia { get; private set; }    
+    public int Inteligencia { get; private set; }
     private Timer timerAtualizacao;
     private bool estaMorto;
 
@@ -27,7 +26,6 @@ class Tamagotchi
         Saude = 100;
         Inteligencia = 50;
         estaMorto = false;
-
         timerAtualizacao = new Timer(1000); // Intervalo de atualização de 1 segundo
         timerAtualizacao.Elapsed += AtualizarTamagotchi; // Atribui o método AtualizarTamagotchi ao evento Elapsed
         timerAtualizacao.Start(); // Inicia o timer
@@ -280,17 +278,14 @@ class Program
                     Console.WriteLine("Opção inválida!");
                     break;
             }
-
             if (tamagotchi.VerificarMorte())
             {
                 Console.WriteLine("Seu Tamagotchi morreu!");
                 jogando = false;
             }
-
             Console.WriteLine("Pressione qualquer tecla para continuar...");
             Console.ReadKey();
         }
-
         Console.WriteLine("Obrigado por jogar o Tamagotchi!");
     }
 
