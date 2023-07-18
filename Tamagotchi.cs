@@ -87,68 +87,82 @@ class Tamagotchi
             energia = 0;
     }
 
-        public void Envelhecer()
+    public void Envelhecer()
+    {
+        ciclos++;
+        if (ciclos % taxaEnvelhecimento == 0)
         {
+            idade++;
             ciclos++;
-            if (ciclos % taxaEnvelhecimento == 0)
-            {
-                idade++;
-            }
+            ciclos = 1;
+
         }
-        public void AtualizarEstado()
-        {
-            fome -= 1;
-            if (fome < 0)
-                fome = 0;
-            felicidade -= 1;
-            if (felicidade < 0)
-                felicidade = 0;
-            alegria -= 1;
+    }
+
+    public void AtualizarEstado()
+    {
+        fome -= 1;
+        if (fome < 0)
+            fome = 0;
+
+        felicidade -= 1;
+        if (felicidade < 0)
+            felicidade = 0;
+
+        alegria -= 1;
             if (alegria < 0)
                 alegria = 0;
-            energia -= 1;
-            if (energia < 0)
-                energia = 0;
 
-            VerificarSaude();
-        }
-        public bool EstaTriste()
-        {
-            return fome < 30;
-        }
-        public bool EstaEntediado()
-        {
-            return felicidade < 30;
-        }
-        public bool EstaDoente()
-        {
-            return saude < 30;
-        }
-        public bool EstaCansado()
-        {
-            return energia < 30;
-        }
-        public bool VerificarMorte()
-        {
-            return fome <= 0 || felicidade <= 0 || alegria <= 0 || energia <= 0 || saude <= 0;
-        }
-        public void VerificarSaude()
-        {
-            int somaAtributos = fome + felicidade + alegria + energia;
+        energia -= 1;
+        if (energia < 0)
+            energia = 0;
 
-            if (somaAtributos >= 320)
-            {
-                saude += 10;
-                if (saude > 100)
-                    saude = 100;
-            }
-            else
-            {
-                saude -= 10;
-                if (saude < 0)
-                    saude = 0;
-            }
+        VerificarSaude();
+    }
+
+    public bool EstaTriste()
+    {
+        return fome < 30;
+    }
+
+    public bool EstaEntediado()
+    {
+        return felicidade < 30;
+    }
+
+    public bool EstaDoente()
+    {
+        return saude < 30;
+    }
+
+    public bool EstaCansado()
+    {
+        return energia < 30;
+    }
+
+    public bool VerificarMorte()
+    {
+        return fome <= 0 || felicidade <= 0 || alegria <= 0 || energia <= 0 || saude <= 0;
+    }
+
+    public void VerificarSaude()
+    {
+        int somaAtributos = fome + felicidade + alegria + energia;
+
+        if (somaAtributos >= 320)
+        {
+            saude += 10;
+            if (saude > 100)
+                saude = 100;
         }
+        else
+        {
+            saude -= 10;
+            if (saude < 0)
+                saude = 0;
+        }
+    }
+    
         public void ExibirEstado()
         {
             Console.WriteLine("Nome: " + nome);
