@@ -293,4 +293,3 @@ class Tamagotchi
             Console.Write("Opção: ");
         }
     }
-
