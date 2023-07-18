@@ -7,17 +7,29 @@ namespace TamagotchiGame;
 class Tamagotchi
 {
     public string nome { get; private set; }
+
     public int fome { get; private set; }
+
     public int felicidade { get; private set; }
+
     public int alegria { get; private set; }
+
     public int idade { get; private set; }
+
     public int energia { get; private set; }
+
     public int saude { get; private set; }
+
     public int taxaEnvelhecimento { get; private set; }
+
     public int ciclos { get; private set; }
+
     public int inteligencia { get; private set; }
+
     private System.Timers.Timer? timerAtualizacao;
+
     private bool estaMorto;
+
     private const string TamagotchiVivoAscii = @"
     /  \.-"" ""-./  \.
      \    -   -    /
@@ -26,6 +38,7 @@ class Tamagotchi
        '-\__Y__/-'
           `---`
         ";
+
     private const string TamagotchiMortoAscii = @"
     /  \.-"" ""-./  \.
      \    -   -    /
@@ -34,6 +47,7 @@ class Tamagotchi
        '-\__Y__/-'
           `---`
         ";
+
     public Tamagotchi(string nome)
     {
         this.nome = nome;
@@ -53,87 +67,87 @@ class Tamagotchi
     }
 
     private void AtualizarTamagotchi(object? sender, System.Timers.ElapsedEventArgs e)
+    {
+        if (!estaMorto)
         {
-            if (!estaMorto)
-            {
-                AtualizarEstado();
-                Envelhecer();
-            }
+            AtualizarEstado();
+            Envelhecer();
         }
+    }
 
-        public void AumentarInteligencia()
+    public void AumentarInteligencia()
+    {
+        inteligencia += 10;
+        if (inteligencia > 100)
+            inteligencia = 100;
+    }
+
+    public void Alimentar()
+    {
+        if (!estaMorto)
         {
-            inteligencia += 10;
-            if (inteligencia > 100)
-                inteligencia = 100;
+            fome += 20;
+            if (fome > 100)
+                fome = 100;
+
+            energia -= 5;
+            if (energia < 0)
+                energia = 0;
         }
+    }
 
-        public void Alimentar()
+    public void DarCarinho()
+    {
+        if (!estaMorto)
         {
-            if (!estaMorto)
-            {
-                fome += 20;
-                if (fome > 100)
-                    fome = 100;
+            felicidade += 30;
+            if (felicidade > 100)
+                felicidade = 100;
 
-                energia -= 5;
-                if (energia < 0)
-                    energia = 0;
-            }
+            energia -= 1;
+            if (energia < 0)
+                energia = 0;
         }
+    }
 
-        public void DarCarinho()
+    public void Brincar()
+    {
+        if (!estaMorto)
         {
-            if (!estaMorto)
-            {
-                felicidade += 30;
-                if (felicidade > 100)
-                    felicidade = 100;
+            alegria += 20;
+            if (alegria > 100)
+                alegria = 100;
 
-                energia -= 1;
-                if (energia < 0)
-                    energia = 0;
-            }
+            energia -= 2;
+            if (energia < 0)
+                energia = 0;
         }
+    }
 
-        public void Brincar()
+    public void Dormir()
+    {
+        if (!estaMorto)
         {
-            if (!estaMorto)
-            {
-                alegria += 20;
-                if (alegria > 100)
-                    alegria = 100;
-
-                energia -= 2;
-                if (energia < 0)
-                    energia = 0;
-            }
+            energia = 100;
         }
+    }
 
-        public void Dormir()
+    public void DarRemedio()
+    {
+        if (!estaMorto)
         {
-            if (!estaMorto)
-            {
-                energia = 100;
-            }
+            saude += 20;
+            if (saude > 100)
+                saude = 100;
+
+            energia -= 2;
+            if (energia < 0)
+                energia = 0;
         }
+    }
 
-        public void DarRemedio()
-        {
-            if (!estaMorto)
-            {
-                saude += 20;
-                if (saude > 100)
-                    saude = 100;
-
-                energia -= 2;
-                if (energia < 0)
-                    energia = 0;
-            }
-        }
-
-        public void Envelhecer()
-        {
+    public void Envelhecer()
+    {
             ciclos++;
             if (ciclos % taxaEnvelhecimento == 0)
             {
@@ -164,12 +178,13 @@ class Tamagotchi
                     energia = 0;
 
                 VerificarSaude();
-
+                
                 if (VerificarMorte())
                 {
                     estaMorto = true;
-                    timerAtualizacao.Stop();
+                    timerAtualizacao?.Stop();
                 }
+                
             }
         }
 
