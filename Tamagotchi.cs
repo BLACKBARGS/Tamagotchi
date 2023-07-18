@@ -5,16 +5,17 @@ namespace TamagotchiGame;
 
 class Tamagotchi
 {
-    private string nome;
-    private int fome;
-    private int felicidade;
-    private int alegria;
-    private int idade;
-    private int energia;
-    private int saude;
-    private int taxaEnvelhecimento;
-    private int ciclos;
-    private int inteligencia;
+    public string nome { get; private set; }
+    public int fome { get; private set; }
+    public int felicidade { get; private set; }
+    public int alegria { get; private set; }
+    public int idade { get; private set; }
+    public int energia { get; private set; }
+    public int saude { get; private set; }
+    public int taxaEnvelhecimento { get; private set; }
+    public int ciclos { get; private set; }
+    public int inteligencia { get; private set; }
+
 
 
     public Tamagotchi(string nome)
@@ -162,7 +163,7 @@ class Tamagotchi
                 saude = 0;
         }
     }
-    
+
         public void ExibirEstado()
         {
             Console.WriteLine("Nome: " + nome);
@@ -209,7 +210,7 @@ class Tamagotchi
                 {
                     tamagotchi.AtualizarEstado();
                     tamagotchi.Envelhecer();
-                    Thread.Sleep(10000);
+                    //Thread.Sleep(10000);
                 }
             });
             threadAtualizacao.Start();
