@@ -86,11 +86,6 @@ class Tamagotchi
             Energia = 0;
     }
 
-    public void Dormir()
-    {
-        Energia = 100;
-    }
-
     public void DarRemedio()
     {
         Saude += 20;
@@ -100,11 +95,6 @@ class Tamagotchi
         Energia -= 2;
         if (Energia < 0)
             Energia = 0;
-    }
-
-    public void Envelhecer()
-    {
-        Idade++;
     }
 
     public void AtualizarEstado()
@@ -126,6 +116,16 @@ class Tamagotchi
             Energia = 0;
 
         VerificarSaude();
+    }
+
+    public void Dormir()
+    {
+        Energia = 100;
+    }
+
+    public void Envelhecer()
+    {
+        Idade++;
     }
 
     public bool EstaTriste()
