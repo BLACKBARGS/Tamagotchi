@@ -1,218 +1,204 @@
+
 using System;
 using System.Timers;
-using System.Threading;
-
-namespace TamagotchiGame;
+using Timer = System.Timers.Timer;
 
 class Tamagotchi
 {
-    public string nome { get; private set; }
-        public int fome { get; private set; }
-        public int felicidade { get; private set; }
-        public int alegria { get; private set; }
-        public int idade { get; private set; }
-        public int energia { get; private set; }
-        public int saude { get; private set; }
-        public int taxaEnvelhecimento { get; private set; }
-        public int ciclos { get; private set; }
-        public int inteligencia { get; private set; }
-        private System.Timers.Timer? timerAtualizacao;
-        private bool estaMorto;
-    
+    public string Nome { get; private set; }
+    public int Fome { get; private set; }
+    public int Felicidade { get; private set; }
+    public int Alegria { get; private set; }
+    public int Idade { get; private set; }
+    public int Energia { get; private set; }
+    public int Saude { get; private set; }
+    public int Inteligencia { get; private set; }    
+    private Timer timerAtualizacao;
+    private bool estaMorto;
+
     public Tamagotchi(string nome)
     {
-        this.nome = nome;
-            fome = 100;
-            felicidade = 100;
-            alegria = 100;
-            idade = 0;
-            energia = 100;
-            saude = 100;
-            taxaEnvelhecimento = 1;
-            ciclos = 0;
-            inteligencia = 50;
-            estaMorto = false;
-            IniciarTamagotchi(); // Inicia o Tamagotchihama a atualização manualmente na inicialização // Chama a atualização manualmente na inicialização
-        }
+        Nome = nome;
+        Fome = 100;
+        Felicidade = 100;
+        Alegria = 100;
+        Idade = 0;
+        Energia = 100;
+        Saude = 100;
+        Inteligencia = 50;
+        estaMorto = false;
 
-private void IniciarTamagotchi()
+        timerAtualizacao = new Timer(1000); // Intervalo de atualização de 1 segundo
+        timerAtualizacao.Elapsed += AtualizarTamagotchi; // Atribui o método AtualizarTamagotchi ao evento Elapsed
+        timerAtualizacao.Start(); // Inicia o timer
+    }
+
+    private void AtualizarTamagotchi(object? sender, ElapsedEventArgs e)
+    {
+        if (!estaMorto)
         {
-            timerAtualizacao = new System.Timers.Timer(1000); // Intervalo de atualização de 1 segundo
-            timerAtualizacao.Elapsed += AtualizarTamagotchi; // Atribui o método AtualizarTamagotchi ao evento Elapsed
-            timerAtualizacao.Start(); // Inicia o timer
-
-            AtualizarTamagotchi(null, null); // Chama a atualização manualmente na inicialização
+            AtualizarEstado();
+            Envelhecer();
         }
-
-    private void AtualizarTamagotchi(object? sender, ElapsedEventArgs? e)
+        else
         {
-            if (!estaMorto)
-            {
-                AtualizarEstado();
-                Envelhecer();
-            }
-            else
-            {
-                timerAtualizacao?.Stop(); // Para o timer se o Tamagotchi estiver morto
-            }
+            timerAtualizacao.Stop(); // Para o timer se o Tamagotchi estiver morto
         }
+    }
 
     public void AumentarInteligencia()
     {
-        inteligencia += 10;
-        if (inteligencia > 100)
-            inteligencia = 100;
+        Inteligencia += 10;
+        if (Inteligencia > 100)
+            Inteligencia = 100;
     }
 
     public void Alimentar()
     {
-        fome += 20;
-        if (fome > 100)
-            fome = 100;
+        Fome += 20;
+        if (Fome > 100)
+            Fome = 100;
 
-        energia -= 5;
-        if (energia < 0)
-            energia = 0;
+        Energia -= 5;
+        if (Energia < 0)
+            Energia = 0;
     }
 
     public void DarCarinho()
     {
-        felicidade += 30;
-        if (felicidade > 100)
-            felicidade = 100;
+        Felicidade += 30;
+        if (Felicidade > 100)
+            Felicidade = 100;
 
-        energia -= 1;
-        if (energia < 0)
-            energia = 0;
+        Energia -= 1;
+        if (Energia < 0)
+            Energia = 0;
     }
 
     public void Brincar()
     {
-        alegria += 20;
-            if (alegria > 100)
-                alegria = 100;
+        Alegria += 20;
+        if (Alegria > 100)
+            Alegria = 100;
 
-        energia -= 2;
-        if (energia < 0)
-            energia = 0;
+        Energia -= 2;
+        if (Energia < 0)
+            Energia = 0;
     }
 
     public void Dormir()
     {
-        energia = 100;
+        Energia = 100;
     }
 
     public void DarRemedio()
     {
-        saude += 20;
-        if (saude > 100)
-            saude = 100;
+        Saude += 20;
+        if (Saude > 100)
+            Saude = 100;
 
-        energia -= 2;
-        if (energia < 0)
-            energia = 0;
+        Energia -= 2;
+        if (Energia < 0)
+            Energia = 0;
     }
 
     public void Envelhecer()
     {
-        ciclos++;
-        if (ciclos % taxaEnvelhecimento == 0)
-        {
-            idade++;
-            ciclos = 1;
-        }
+        Idade++;
     }
 
     public void AtualizarEstado()
     {
-        fome -= 1;
-        if (fome < 0)
-            fome = 0;
+        Fome -= 1;
+        if (Fome < 0)
+            Fome = 0;
 
-        felicidade -= 1;
-        if (felicidade < 0)
-            felicidade = 0;
+        Felicidade -= 1;
+        if (Felicidade < 0)
+            Felicidade = 0;
 
-        alegria -= 1;
-            if (alegria < 0)
-                alegria = 0;
+        Alegria -= 1;
+        if (Alegria < 0)
+            Alegria = 0;
 
-        energia -= 1;
-        if (energia < 0)
-            energia = 0;
+        Energia -= 1;
+        if (Energia < 0)
+            Energia = 0;
 
         VerificarSaude();
     }
 
     public bool EstaTriste()
     {
-        return fome < 30;
+        return Fome < 30;
     }
 
     public bool EstaEntediado()
     {
-        return felicidade < 30;
+        return Felicidade < 30;
     }
 
     public bool EstaDoente()
     {
-        return saude < 30;
+        return Saude < 30;
     }
 
     public bool EstaCansado()
     {
-        return energia < 30;
+        return Energia < 30;
     }
 
     public bool VerificarMorte()
     {
-        return fome <= 0 || felicidade <= 0 || alegria <= 0 || energia <= 0 || saude <= 0;
+        return Fome <= 0 || Felicidade <= 0 || Alegria <= 0 || Energia <= 0 || Saude <= 0;
     }
 
     public void VerificarSaude()
     {
-        int somaAtributos = fome + felicidade + alegria + energia;
+        int somaAtributos = Fome + Felicidade + Alegria + Energia;
 
         if (somaAtributos >= 320)
         {
-            saude += 10;
-            if (saude > 100)
-                saude = 100;
+            Saude += 10;
+            if (Saude > 100)
+                Saude = 100;
         }
         else
         {
-            saude -= 10;
-            if (saude < 0)
-                saude = 0;
+            Saude -= 10;
+            if (Saude < 0)
+                Saude = 0;
         }
     }
 
     public void ExibirEstado()
     {
-        Console.WriteLine("Nome: " + nome);
-        Console.WriteLine("Idade: " + idade);
-        Console.WriteLine("Fome: " + fome);
-        Console.WriteLine("Felicidade: " + felicidade);
-        Console.WriteLine("Saúde: " + saude);
-        Console.WriteLine("Alegria: " + alegria);
-        Console.WriteLine("Energia: " + energia);
-        Console.WriteLine("Inteligência: " + inteligencia);
+        Console.WriteLine("Nome: " + Nome);
+        Console.WriteLine("Idade: " + Idade);
+        Console.WriteLine("Fome: " + Fome);
+        Console.WriteLine("Felicidade: " + Felicidade);
+        Console.WriteLine("Saúde: " + Saude);
+        Console.WriteLine("Alegria: " + Alegria);
+        Console.WriteLine("Energia: " + Energia);
+        Console.WriteLine("Inteligência: " + Inteligencia);
     }
 
     public void ExibirTamagotchi()
     {
         Console.WriteLine(@"
-      .^._.^.
-      | @ @ |
-     ( '---' )
-    .'___V___'.
-    | /     \ |
-      \ /-\ /
-       V   V
+
+          .^._.^.
+          | @ @ |
+         ( '---' )
+        .'___V___'.
+        | /     \ |
+          \ /-\ /
+           V   V
+       
         ");
     }
-
 }
+
 class Program
 {
     static void Main()
@@ -229,16 +215,6 @@ class Program
         Tamagotchi tamagotchi = new Tamagotchi(nome);
 
         bool jogando = true;
-        Thread threadAtualizacao = new Thread(() =>
-            {
-                while (jogando)
-                {
-                    tamagotchi.AtualizarEstado();
-                    tamagotchi.Envelhecer();
-                    //Thread.Sleep(10000);
-                }
-            });
-        threadAtualizacao.Start();
 
         while (jogando)
         {
@@ -254,58 +230,55 @@ class Program
 
             if (tamagotchi.EstaCansado())
                 Console.WriteLine("Seu Tamagotchi está cansado!");
-            if( tamagotchi.EstaDoente())
-                Console.WriteLine("Seu Tamagotchi está doente");
+
+            if (tamagotchi.EstaDoente())
+                Console.WriteLine("Seu Tamagotchi está doente!");
 
             ExibirMenu();
             string? opcao = Console.ReadLine();
 
-            tamagotchi.Envelhecer();
             tamagotchi.AtualizarEstado();
+            tamagotchi.Envelhecer();
 
             switch (opcao)
             {
                 case "1":
                     tamagotchi.Alimentar();
                     Console.WriteLine("Você alimentou o Tamagotchi!");
-                break;
+                    break;
 
                 case "2":
                     tamagotchi.DarCarinho();
                     Console.WriteLine("Você deu carinho ao Tamagotchi!");
-                break;
+                    break;
 
                 case "3":
                     tamagotchi.Brincar();
                     Console.WriteLine("Você brincou com o Tamagotchi!");
-                break;
+                    break;
 
                 case "4":
                     tamagotchi.Dormir();
                     Console.WriteLine("Seu Tamagotchi dormiu e recuperou a energia!");
-                break;
+                    break;
 
                 case "5":
-                    tamagotchi.AtualizarEstado();
-                break;
-                    
-                case "6":
                     tamagotchi.DarRemedio();
-                    Console.WriteLine("Seu Tomou Remédio!");
-                break;
+                    Console.WriteLine("Seu Tamagotchi tomou remédio!");
+                    break;
 
-                case "7":
+                case "6":
                     tamagotchi.AumentarInteligencia();
                     Console.WriteLine("A inteligência do Tamagotchi aumentou!");
-                break;
+                    break;
 
-                case "8":
+                case "7":
                     jogando = false;
-                break;
+                    break;
 
                 default:
                     Console.WriteLine("Opção inválida!");
-                break;
+                    break;
             }
 
             if (tamagotchi.VerificarMorte())
@@ -313,8 +286,10 @@ class Program
                 Console.WriteLine("Seu Tamagotchi morreu!");
                 jogando = false;
             }
+
+            Console.WriteLine("Pressione qualquer tecla para continuar...");
+            Console.ReadKey();
         }
-        threadAtualizacao.Join();
 
         Console.WriteLine("Obrigado por jogar o Tamagotchi!");
     }
@@ -327,10 +302,9 @@ class Program
         Console.WriteLine("2. Dar carinho");
         Console.WriteLine("3. Brincar");
         Console.WriteLine("4. Dormir");
-        Console.WriteLine("5. Atualizar");
-        Console.WriteLine("6. Dar Remedio");
-        Console.WriteLine("7. Aumentar Inteligência");
-        Console.WriteLine("8. Sair");
+        Console.WriteLine("5. Dar remédio");
+        Console.WriteLine("6. Aumentar inteligência");
+        Console.WriteLine("7. Sair");
         Console.Write("Opção: ");
     }
 }
