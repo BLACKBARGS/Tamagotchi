@@ -39,46 +39,54 @@ class Tamagotchi
     }
 
     public void Alimentar()
-        {
-            fome += 20;
-            if (fome > 100)
-                fome = 100;
+    {
+        fome += 20;
+        if (fome > 100)
+            fome = 100;
 
-            energia -= 5;
-            if (energia < 0)
-                energia = 0;
-        }
-        public void DarCarinho()
-        {
-            felicidade += 30;
-            if (felicidade > 100)
-                felicidade = 100;
-            energia -= 1;
-            if (energia < 0)
-                energia = 0;
-        }
-        public void Brincar()
-        {
-            alegria += 20;
+        energia -= 5;
+        if (energia < 0)
+            energia = 0;
+    }
+
+    public void DarCarinho()
+    {
+        felicidade += 30;
+        if (felicidade > 100)
+            felicidade = 100;
+
+        energia -= 1;
+        if (energia < 0)
+            energia = 0;
+    }
+
+    public void Brincar()
+    {
+        alegria += 20;
             if (alegria > 100)
                 alegria = 100;
-            energia -= 2;
-            if (energia < 0)
-                energia = 0;
-        }
-        public void Dormir()
-        {
-            energia = 100;
-        }  
-        public void DarRemedio()
-        {
-            saude += 20;
-            if (saude > 100)
-                saude = 100;
-            energia -= 2;
-            if (energia < 0)
-                energia = 0;
-        }
+
+        energia -= 2;
+        if (energia < 0)
+            energia = 0;
+    }
+
+    public void Dormir()
+    {
+        energia = 100;
+    }
+
+    public void DarRemedio()
+    {
+        saude += 20;
+        if (saude > 100)
+            saude = 100;
+
+        energia -= 2;
+        if (energia < 0)
+            energia = 0;
+    }
+
         public void Envelhecer()
         {
             ciclos++;
@@ -285,4 +293,4 @@ class Tamagotchi
             Console.Write("Opção: ");
         }
     }
-}
+
