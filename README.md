@@ -19,6 +19,4 @@ Este é um pequeno jogo Tamagotchi onde você pode cuidar de um personagem virtu
 8. Após escolher uma ação, o estado do Tamagotchi será atualizado novamente.
 9. O jogo continuará até que você decida sair.
 10. Ao sair do jogo, será exibida uma mensagem de agradecimento.
-
 Divirta-se cuidando do seu Tamagotchi!
-
