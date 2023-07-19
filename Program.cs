@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using System.Timers;
 using Timer = System.Timers.Timer;
-using TamagotchiPropriedades;
+
 
 class Tamagotchi 
 {
@@ -186,13 +186,13 @@ class Tamagotchi
     {
         Console.WriteLine(@"
 
-          .^._.^.
-          | @ @ |
-         ( '---' )
-        .'___V___'.
-        | /     \ |
-          \ /-\ /
-           V   V
+           .^._.^.
+           | @ @ |
+          ( '---' )
+         .'___V___'.
+         | /     \ |
+           \ /-\ /
+            V   V
        
         ");
     }
