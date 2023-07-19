@@ -1,10 +1,8 @@
 using Timer = System.Timers.Timer;
 using System;
-
 class Game
 {
     private Tamagotchi tamagotchi;
-
     public Game(Tamagotchi tamagotchi)
     {
         this.tamagotchi = tamagotchi;

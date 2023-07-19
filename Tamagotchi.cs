@@ -14,7 +14,6 @@ class Tamagotchi
     public int Inteligencia { get; private set; }
     private Timer timerAtualizacao;
     private bool estaMorto;
-
     public Tamagotchi(string nome)
     {
         Nome = nome;
