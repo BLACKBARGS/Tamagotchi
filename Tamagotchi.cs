@@ -194,4 +194,19 @@ class Tamagotchi
        
         ");
     }
+
+    public void ExibirTamagotchiMorto()
+    {
+        Console.WriteLine(@"
+
+           .^._.^.
+           | X X |
+          ( '---' )
+         .'___V___'.
+         | /     \ |
+           \ /-\ /
+            V   V
+       
+        ");
+    }
 }
