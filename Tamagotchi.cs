@@ -1,6 +1,7 @@
 using System;
 using System.Timers;
 using Timer = System.Timers.Timer;
+using TamagotchiPropriedades;
 namespace TamagotchiMain;
 
 class Tamagotchi 
