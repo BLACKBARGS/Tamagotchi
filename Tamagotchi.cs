@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Timers;
 using Timer = System.Timers.Timer;
-
 
 class Tamagotchi 
 {
@@ -27,9 +26,9 @@ class Tamagotchi
         Saude = 100;
         Inteligencia = 50;
         estaMorto = false;
-        timerAtualizacao = new Timer(1000); // Intervalo de atualização de 1 segundo
-        timerAtualizacao.Elapsed += AtualizarTamagotchi; // Atribui o método AtualizarTamagotchi ao evento Elapsed
-        timerAtualizacao.Start(); // Inicia o timer
+        timerAtualizacao = new Timer(1000);
+        timerAtualizacao.Elapsed += AtualizarTamagotchi;
+        timerAtualizacao.Start();
     }
 
     private void AtualizarTamagotchi(object? sender, ElapsedEventArgs e)
@@ -41,7 +40,7 @@ class Tamagotchi
         }
         else
         {
-            timerAtualizacao.Stop(); // Para o timer se o Tamagotchi estiver morto
+            timerAtualizacao.Stop();
         }
     }
 
@@ -195,112 +194,5 @@ class Tamagotchi
             V   V
        
         ");
-    }
-}
-
-class Program
-{
-    static void Main()
-    {
-        Console.WriteLine("Bem-vindo ao Tamagotchi!");
-        Console.Write("Digite o nome do seu Tamagotchi: ");
-        string? nome = Console.ReadLine();
-        if (string.IsNullOrEmpty(nome))
-        {
-            Console.WriteLine("Nome inválido. O Tamagotchi não pode ser criado.");
-            return; // Sai do programa se o nome for inválido
-        }
-
-        Tamagotchi tamagotchi = new Tamagotchi(nome);
-
-        bool jogando = true;
-
-        while (jogando)
-        {
-            Console.Clear();
-            tamagotchi.ExibirTamagotchi();
-            tamagotchi.ExibirEstado();
-
-            if (tamagotchi.EstaTriste())
-                Console.WriteLine("Seu Tamagotchi está triste!");
-
-            if (tamagotchi.EstaEntediado())
-                Console.WriteLine("Seu Tamagotchi está entediado!");
-
-            if (tamagotchi.EstaCansado())
-                Console.WriteLine("Seu Tamagotchi está cansado!");
-
-            if (tamagotchi.EstaDoente())
-                Console.WriteLine("Seu Tamagotchi está doente!");
-
-            ExibirMenu();
-            string? opcao = Console.ReadLine();
-
-            tamagotchi.AtualizarEstado();
-            tamagotchi.Envelhecer();
-
-            switch (opcao)
-            {
-                case "1":
-                    tamagotchi.Alimentar();
-                    Console.WriteLine("Você alimentou o Tamagotchi!");
-                    break;
-
-                case "2":
-                    tamagotchi.DarCarinho();
-                    Console.WriteLine("Você deu carinho ao Tamagotchi!");
-                    break;
-
-                case "3":
-                    tamagotchi.Brincar();
-                    Console.WriteLine("Você brincou com o Tamagotchi!");
-                    break;
-
-                case "4":
-                    tamagotchi.Dormir();
-                    Console.WriteLine("Seu Tamagotchi dormiu e recuperou a energia!");
-                    break;
-
-                case "5":
-                    tamagotchi.DarRemedio();
-                    Console.WriteLine("Seu Tamagotchi tomou remédio!");
-                    break;
-
-                case "6":
-                    tamagotchi.AumentarInteligencia();
-                    Console.WriteLine("A inteligência do Tamagotchi aumentou!");
-                    break;
-
-                case "7":
-                    jogando = false;
-                    break;
-
-                default:
-                    Console.WriteLine("Opção inválida!");
-                    break;
-            }
-            if (tamagotchi.VerificarMorte())
-            {
-                Console.WriteLine("Seu Tamagotchi morreu!");
-                jogando = false;
-            }
-            Console.WriteLine("Pressione qualquer tecla para continuar...");
-            Console.ReadKey();
-        }
-        Console.WriteLine("Obrigado por jogar o Tamagotchi!");
-    }
-
-    static void ExibirMenu()
-    {
-        Console.WriteLine();
-        Console.WriteLine("Escolha uma ação:");
-        Console.WriteLine("1. Alimentar");
-        Console.WriteLine("2. Dar carinho");
-        Console.WriteLine("3. Brincar");
-        Console.WriteLine("4. Dormir");
-        Console.WriteLine("5. Dar remédio");
-        Console.WriteLine("6. Aumentar inteligência");
-        Console.WriteLine("7. Sair");
-        Console.Write("Opção: ");
     }
 }
