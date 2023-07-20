@@ -78,7 +78,8 @@ class Game
 
             if (tamagotchi.VerificarMorte())
             {
-                Console.WriteLine("Seu Tamagotchi morreu!");
+                tamagotchi.ExibirTamagotchiMorto();
+                Console.WriteLine("Seu Tamagotchi morreu! ");
                 jogando = false;
             }
 
