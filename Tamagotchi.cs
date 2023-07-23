@@ -4,7 +4,8 @@ using System.Threading;
 using Timer = System.Timers.Timer;
 
 class Tamagotchi 
-{   
+{  
+    public string Version { get; private set; } = "1.1"; 
     private const int MaxValue = 100;
     private const int MinValue = 0;
     private const int MaxAttributeSum = 320;
