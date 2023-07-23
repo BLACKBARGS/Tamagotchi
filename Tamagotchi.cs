@@ -8,13 +8,13 @@ class Tamagotchi
     private const int MinValue = 0;
     private const int MaxAttributeSum = 320;
     private const int AttributeIncrement = 10;
-    private const int AttributeDecrement = 10;
+    private const int AttributeDecrement = 2;
     private const int MaxIntelligence = 100;
-    private const int IntelligenceIncrement = 10;
+    private const int IntelligenceIncrement = 30;
     private Thread tamagotchiThread;
     //private const int IntelligenceDecrement = 10;
-    private const int EnergyDecrementFood = 10;
-    private const int EnergyDecrementAffection = 1;
+    private const int EnergyDecrementFood = 5;
+    private const int EnergyDecrementAffection = 10;
     private const int EnergyDecrementPlay = 2;
     private const int EnergyDecrementMedicine = 2;
 
