@@ -1,9 +1,24 @@
 using System;
 using System.Timers;
+using System.Threading;
 using Timer = System.Timers.Timer;
 
 class Tamagotchi 
-{
+{   
+    private const int MaxValue = 100;
+    private const int MinValue = 0;
+    private const int MaxAttributeSum = 320;
+    private const int AttributeIncrement = 10;
+    private const int AttributeDecrement = 10;
+    private const int MaxIntelligence = 100;
+    private const int IntelligenceIncrement = 10;
+    private Thread tamagotchiThread;
+    //private const int IntelligenceDecrement = 10;
+    private const int EnergyDecrementFood = 10;
+    private const int EnergyDecrementAffection = 1;
+    private const int EnergyDecrementPlay = 2;
+    private const int EnergyDecrementMedicine = 2;
+
     public string Nome { get; private set; }
     public int Fome { get; private set; }
     public int Felicidade { get; private set; }
@@ -12,22 +27,35 @@ class Tamagotchi
     public int Energia { get; private set; }
     public int Saude { get; private set; }
     public int Inteligencia { get; private set; }
+
     private Timer timerAtualizacao;
     private bool estaMorto;
+
     public Tamagotchi(string nome)
     {
         Nome = nome;
-        Fome = 100;
-        Felicidade = 100;
-        Alegria = 100;
+        Fome = MaxValue;
+        Felicidade = MaxValue;
+        Alegria = MaxValue;
         Idade = 0;
-        Energia = 100;
-        Saude = 100;
+        Energia = MaxValue;
+        Saude = MaxValue;
         Inteligencia = 50;
         estaMorto = false;
-        timerAtualizacao = new Timer(1000);
+        timerAtualizacao = new Timer(10000);
         timerAtualizacao.Elapsed += AtualizarTamagotchi;
         timerAtualizacao.Start();
+
+        tamagotchiThread = new Thread(ManterTamagotchiRodando);
+        tamagotchiThread.Start();
+    }
+
+    private void ManterTamagotchiRodando()
+    {
+        while (!estaMorto)
+        {
+            Thread.Sleep(10000);
+        }
     }
 
     private void AtualizarTamagotchi(object? sender, ElapsedEventArgs e)
@@ -43,74 +71,61 @@ class Tamagotchi
         }
     }
 
-    public void AumentarInteligencia()
+     public void AumentarInteligencia()
     {
-        Inteligencia += 10;
-        if (Inteligencia > 100)
-            Inteligencia = 100;
+        Inteligencia += IntelligenceIncrement;
+        Inteligencia = Math.Min(Inteligencia, MaxIntelligence);
     }
 
     public void Alimentar()
     {
-        Fome += 20;
-        if (Fome > 100)
-            Fome = 100;
+        Fome += AttributeIncrement;
+        Fome = Math.Min(Fome, MaxValue);
 
-        Energia -= 5;
-        if (Energia < 0)
-            Energia = 0;
+        Energia -= EnergyDecrementFood;
+        Energia = Math.Max(Energia, MinValue);
     }
 
     public void DarCarinho()
     {
-        Felicidade += 30;
-        if (Felicidade > 100)
-            Felicidade = 100;
+        Felicidade += AttributeIncrement;
+        Felicidade = Math.Min(Felicidade, MaxValue);
 
-        Energia -= 1;
-        if (Energia < 0)
-            Energia = 0;
+        Energia -= EnergyDecrementAffection;
+        Energia = Math.Max(Energia, MinValue);
     }
 
     public void Brincar()
     {
-        Alegria += 20;
-        if (Alegria > 100)
-            Alegria = 100;
+        Alegria += AttributeIncrement;
+        Alegria = Math.Min(Alegria, MaxValue);
 
-        Energia -= 2;
-        if (Energia < 0)
-            Energia = 0;
+        Energia -= EnergyDecrementPlay;
+        Energia = Math.Max(Energia, MinValue);
     }
 
     public void DarRemedio()
     {
-        Saude += 20;
-        if (Saude > 100)
-            Saude = 100;
+        Saude += AttributeIncrement;
+        Saude = Math.Min(Saude, MaxValue);
 
-        Energia -= 2;
-        if (Energia < 0)
-            Energia = 0;
+        Energia -= EnergyDecrementMedicine;
+        Energia = Math.Max(Energia, MinValue);
     }
 
     public void AtualizarEstado()
     {
-        Fome -= 1;
-        if (Fome < 0)
-            Fome = 0;
+        Fome -= AttributeDecrement;
+        Fome = Math.Max(Fome, MinValue);
 
-        Felicidade -= 1;
-        if (Felicidade < 0)
-            Felicidade = 0;
+        Felicidade -= AttributeDecrement;
+        Felicidade = Math.Max(Felicidade, MinValue);
 
-        Alegria -= 1;
-        if (Alegria < 0)
-            Alegria = 0;
+        Alegria -= AttributeDecrement;
+        Alegria = Math.Max(Alegria, MinValue);
 
-        Energia -= 1;
-        if (Energia < 0)
-            Energia = 0;
+        Energia -= AttributeDecrement;
+        Energia = Math.Max(Energia, MinValue);
 
         VerificarSaude();
     }
@@ -154,17 +169,15 @@ class Tamagotchi
     {
         int somaAtributos = Fome + Felicidade + Alegria + Energia;
 
-        if (somaAtributos >= 320)
+        if (somaAtributos >= MaxAttributeSum)
         {
-            Saude += 10;
-            if (Saude > 100)
-                Saude = 100;
+            Saude += AttributeIncrement;
+            Saude = Math.Min(Saude, MaxValue);
         }
         else
         {
-            Saude -= 10;
-            if (Saude < 0)
-                Saude = 0;
+            Saude -= AttributeDecrement;
+            Saude = Math.Max(Saude, MinValue);
         }
     }
 
