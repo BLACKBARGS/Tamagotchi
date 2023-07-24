@@ -3,7 +3,7 @@ using Timer = System.Timers.Timer;
 
 namespace Tamagotchi;
 
-class Tamagotchi
+public class Tamagotchi
 {
     public string Version { get; private set; } = "1.1";
     private const int MaxValue = 100;
@@ -13,8 +13,6 @@ class Tamagotchi
     private const int AttributeDecrement = 2;
     private const int MaxIntelligence = 100;
     private const int IntelligenceIncrement = 30;
-    private readonly Thread tamagotchiThread;
-    //private const int IntelligenceDecrement = 10;
     private const int EnergyDecrementFood = 5;
     private const int EnergyDecrementAffection = 10;
     private const int EnergyDecrementPlay = 2;
@@ -47,7 +45,7 @@ class Tamagotchi
         _timerAtualizacao.Elapsed += AtualizarTamagotchi;
         _timerAtualizacao.Start();
 
-        tamagotchiThread = new Thread(ManterTamagotchiRodando);
+        var tamagotchiThread = new Thread(ManterTamagotchiRodando);
         tamagotchiThread.Start();
     }
 
@@ -194,7 +192,7 @@ class Tamagotchi
         Console.WriteLine("Inteligência: " + Inteligencia);
     }
 
-    public void ExibirTamagotchi()
+    public static void ExibirTamagotchi()
     {
         Console.WriteLine(@"
 
@@ -209,7 +207,7 @@ class Tamagotchi
         ");
     }
     
-    public void ExibirTamagotchiMorto()
+    public static void ExibirTamagotchiMorto()
     {
         Console.WriteLine(@"
 

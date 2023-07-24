@@ -15,7 +15,7 @@ internal class Game
         while (jogando)
         {
             Console.Clear();
-            _tamagotchi.ExibirTamagotchi();
+            Tamagotchi.ExibirTamagotchi();
             _tamagotchi.ExibirEstado();
 
             if (_tamagotchi.EstaTriste())
@@ -78,7 +78,7 @@ internal class Game
 
             if (_tamagotchi.VerificarMorte())
             {
-                _tamagotchi.ExibirTamagotchiMorto();
+                Tamagotchi.ExibirTamagotchiMorto();
                 Console.WriteLine("Seu Tamagotchi morreu! ");
                 jogando = false;
             }
