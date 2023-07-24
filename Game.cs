@@ -1,67 +1,69 @@
-class Game
+namespace Tamagotchi;
+
+internal class Game
 {
-    private Tamagotchi tamagotchi;
+    private readonly Tamagotchi _tamagotchi;
     public Game(Tamagotchi tamagotchi)
     {
-        this.tamagotchi = tamagotchi;
+        this._tamagotchi = tamagotchi;
     }
 
     public void Run()
     {
-        bool jogando = true;
+        var jogando = true;
 
         while (jogando)
         {
             Console.Clear();
-            tamagotchi.ExibirTamagotchi();
-            tamagotchi.ExibirEstado();
+            _tamagotchi.ExibirTamagotchi();
+            _tamagotchi.ExibirEstado();
 
-            if (tamagotchi.EstaTriste())
+            if (_tamagotchi.EstaTriste())
                 Console.WriteLine("Seu Tamagotchi está triste!");
 
-            if (tamagotchi.EstaEntediado())
+            if (_tamagotchi.EstaEntediado())
                 Console.WriteLine("Seu Tamagotchi está entediado!");
 
-            if (tamagotchi.EstaCansado())
+            if (_tamagotchi.EstaCansado())
                 Console.WriteLine("Seu Tamagotchi está cansado!");
 
-            if (tamagotchi.EstaDoente())
+            if (_tamagotchi.EstaDoente())
                 Console.WriteLine("Seu Tamagotchi está doente!");
 
             string? opcao = ExibirMenu();
 
-            tamagotchi.AtualizarEstado();
-            tamagotchi.Envelhecer();
+            _tamagotchi.AtualizarEstado();
+            _tamagotchi.Envelhecer();
 
             switch (opcao)
             {
                 case "1":
-                    tamagotchi.Alimentar();
+                    _tamagotchi.Alimentar();
                     Console.WriteLine("Você alimentou o Tamagotchi!");
                     break;
 
                 case "2":
-                    tamagotchi.DarCarinho();
+                    _tamagotchi.DarCarinho();
                     Console.WriteLine("Você deu carinho ao Tamagotchi!");
                     break;
 
                 case "3":
-                    tamagotchi.Brincar();
+                    _tamagotchi.Brincar();
                     Console.WriteLine("Você brincou com o Tamagotchi!");
                     break;
 
                 case "4":
-                    tamagotchi.Dormir();
+                    _tamagotchi.Dormir();
                     Console.WriteLine("Seu Tamagotchi dormiu e recuperou a energia!");
                     break;
 
                 case "5":
-                    tamagotchi.DarRemedio();
+                    _tamagotchi.DarRemedio();
                     Console.WriteLine("Seu Tamagotchi tomou remédio!");
                     break;
 
                 case "6":
-                    tamagotchi.AumentarInteligencia();
+                    _tamagotchi.AumentarInteligencia();
                     Console.WriteLine("A inteligência do Tamagotchi aumentou!");
                     break;
 
@@ -74,9 +76,9 @@ class Game
                     break;
             }
 
-            if (tamagotchi.VerificarMorte())
+            if (_tamagotchi.VerificarMorte())
             {
-                tamagotchi.ExibirTamagotchiMorto();
+                _tamagotchi.ExibirTamagotchiMorto();
                 Console.WriteLine("Seu Tamagotchi morreu! ");
                 jogando = false;
             }
@@ -88,7 +90,7 @@ class Game
         Console.WriteLine("Obrigado por jogar o Tamagotchi!");
     }
 
-    static string? ExibirMenu()
+    private static string? ExibirMenu()
     {
         Console.WriteLine();
         Console.WriteLine("Escolha uma ação:");

@@ -1,6 +1,8 @@
 using System.Timers;
 using Timer = System.Timers.Timer;
 
+namespace Tamagotchi;
+
 class Tamagotchi
 {
     public string Version { get; private set; } = "1.1";
@@ -11,24 +13,24 @@ class Tamagotchi
     private const int AttributeDecrement = 2;
     private const int MaxIntelligence = 100;
     private const int IntelligenceIncrement = 30;
-    private Thread tamagotchiThread;
+    private readonly Thread tamagotchiThread;
     //private const int IntelligenceDecrement = 10;
     private const int EnergyDecrementFood = 5;
     private const int EnergyDecrementAffection = 10;
     private const int EnergyDecrementPlay = 2;
     private const int EnergyDecrementMedicine = 2;
 
-    public string Nome { get; private set; }
-    public int Fome { get; private set; }
-    public int Felicidade { get; private set; }
-    public int Alegria { get; private set; }
-    public int Idade { get; private set; }
-    public int Energia { get; private set; }
-    public int Saude { get; private set; }
-    public int Inteligencia { get; private set; }
+    private string Nome { get; set; }
+    private int Fome { get; set; }
+    private int Felicidade { get; set; }
+    private int Alegria { get; set; }
+    private int Idade { get; set; }
+    private int Energia { get; set; }
+    private int Saude { get; set; }
+    private int Inteligencia { get; set; }
 
-    private Timer timerAtualizacao;
-    private bool estaMorto;
+    private readonly Timer _timerAtualizacao;
+    private readonly bool _estaMorto;
 
     public Tamagotchi(string nome)
     {
@@ -40,10 +42,10 @@ class Tamagotchi
         Energia = MaxValue;
         Saude = MaxValue;
         Inteligencia = 50;
-        estaMorto = false;
-        timerAtualizacao = new Timer(10000);
-        timerAtualizacao.Elapsed += AtualizarTamagotchi;
-        timerAtualizacao.Start();
+        _estaMorto = false;
+        _timerAtualizacao = new Timer(10000);
+        _timerAtualizacao.Elapsed += AtualizarTamagotchi;
+        _timerAtualizacao.Start();
 
         tamagotchiThread = new Thread(ManterTamagotchiRodando);
         tamagotchiThread.Start();
@@ -51,7 +53,7 @@ class Tamagotchi
 
     private void ManterTamagotchiRodando()
     {
-        while (!estaMorto)
+        while (!_estaMorto)
         {
             Thread.Sleep(10000);
         }
@@ -59,14 +61,14 @@ class Tamagotchi
 
     private void AtualizarTamagotchi(object? sender, ElapsedEventArgs e)
     {
-        if (!estaMorto)
+        if (!_estaMorto)
         {
             AtualizarEstado();
             Envelhecer();
         }
         else
         {
-            timerAtualizacao.Stop();
+            _timerAtualizacao.Stop();
         }
     }
 
@@ -164,9 +166,9 @@ class Tamagotchi
         return Fome <= 0 || Felicidade <= 0 || Alegria <= 0 || Energia <= 0 || Saude <= 0;
     }
 
-    public void VerificarSaude()
+    private void VerificarSaude()
     {
-        int somaAtributos = Fome + Felicidade + Alegria + Energia;
+        var somaAtributos = Fome + Felicidade + Alegria + Energia;
 
         if (somaAtributos >= MaxAttributeSum)
         {
@@ -206,7 +208,7 @@ class Tamagotchi
        
         ");
     }
-
+    
     public void ExibirTamagotchiMorto()
     {
         Console.WriteLine(@"
