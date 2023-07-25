@@ -141,22 +141,22 @@ public class Tamagotchi
 
     public bool EstaTriste()
     {
-        return Fome < 30;
+        return Fome < 15;
     }
 
     public bool EstaEntediado()
     {
-        return Felicidade < 30;
+        return Felicidade < 20;
     }
 
     public bool EstaDoente()
     {
-        return Saude < 30;
+        return Saude < 10;
     }
 
     public bool EstaCansado()
     {
-        return Energia < 30;
+        return Energia < 25;
     }
 
     public bool VerificarMorte()
