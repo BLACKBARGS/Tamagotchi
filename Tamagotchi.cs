@@ -129,17 +129,11 @@ public class Tamagotchi
         VerificarSaude();
     }
 
-    public void Dormir()
-    {
-        Energia = 100;
-    }
+    public void Dormir() => Energia = 100;
+    
+    public void Envelhecer() => Idade++;
 
-    public void Envelhecer()
-    {
-        Idade++;
-    }
-
-    public bool EstaTriste()
+    public bool EstaTriste() 
     {
         return Fome < 15;
     }
