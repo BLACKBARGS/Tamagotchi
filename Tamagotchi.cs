@@ -8,7 +8,7 @@ public class Tamagotchi
     public string Version { get; private set; } = "1.1";
     private const int MaxValue = 100;
     private const int MinValue = 0;
-    private const int MaxAttributeSum = 320;
+    private const int MaxAttributeSum = 100;
     private const int AttributeIncrement = 10;
     private const int AttributeDecrement = 2;
     private const int MaxIntelligence = 100;
@@ -17,6 +17,8 @@ public class Tamagotchi
     private const int EnergyDecrementAffection = 10;
     private const int EnergyDecrementPlay = 2;
     private const int EnergyDecrementMedicine = 2;
+    private const int SleepInterval = 10000;
+    private const int TimerInterval = 10000;
 
     private string Nome { get; set; }
     private int Fome { get; set; }
@@ -39,9 +41,9 @@ public class Tamagotchi
         Idade = 0;
         Energia = MaxValue;
         Saude = MaxValue;
-        Inteligencia = 50;
+        Inteligencia = 25;
         _estaMorto = false;
-        _timerAtualizacao = new Timer(10000);
+        _timerAtualizacao = new Timer(TimerInterval);
         _timerAtualizacao.Elapsed += AtualizarTamagotchi;
         _timerAtualizacao.Start();
 
@@ -53,11 +55,11 @@ public class Tamagotchi
     {
         while (!_estaMorto)
         {
-            Thread.Sleep(10000);
+            Thread.Sleep(SleepInterval);
         }
     }
 
-    private void AtualizarTamagotchi(object? sender, ElapsedEventArgs e)
+    private void AtualizarTamagotchi(object? send, ElapsedEventArgs e)
     {
         if (!_estaMorto)
         {
@@ -72,67 +74,9 @@ public class Tamagotchi
 
     public void AumentarInteligencia()
     {
-        Inteligencia += IntelligenceIncrement;
-        Inteligencia = Math.Min(Inteligencia, MaxIntelligence);
+        Inteligencia = Math.Min(Inteligencia + IntelligenceIncrement, MaxIntelligence);
     }
-
-    public void Alimentar()
-    {
-        Fome += AttributeIncrement;
-        Fome = Math.Min(Fome, MaxValue);
-
-        Energia -= EnergyDecrementFood;
-        Energia = Math.Max(Energia, MinValue);
-    }
-
-    public void DarCarinho()
-    {
-        Felicidade += AttributeIncrement;
-        Felicidade = Math.Min(Felicidade, MaxValue);
-
-        Energia -= EnergyDecrementAffection;
-        Energia = Math.Max(Energia, MinValue);
-    }
-
-    public void Brincar()
-    {
-        Alegria += AttributeIncrement;
-        Alegria = Math.Min(Alegria, MaxValue);
-
-        Energia -= EnergyDecrementPlay;
-        Energia = Math.Max(Energia, MinValue);
-    }
-
-    public void DarRemedio()
-    {
-        Saude += AttributeIncrement;
-        Saude = Math.Min(Saude, MaxValue);
-
-        Energia -= EnergyDecrementMedicine;
-        Energia = Math.Max(Energia, MinValue);
-    }
-
-    public void AtualizarEstado()
-    {
-        Fome -= AttributeDecrement;
-        Fome = Math.Max(Fome, MinValue);
-
-        Felicidade -= AttributeDecrement;
-        Felicidade = Math.Max(Felicidade, MinValue);
-
-        Alegria -= AttributeDecrement;
-        Alegria = Math.Max(Alegria, MinValue);
-
-        Energia -= AttributeDecrement;
-        Energia = Math.Max(Energia, MinValue);
-
-        VerificarSaude();
-    }
-
-    public void Dormir() => Energia = 100;
     
-    public void Envelhecer() => Idade++;
-
     public bool EstaTriste() 
     {
         return Fome < 15;
@@ -157,62 +101,92 @@ public class Tamagotchi
     {
         return Fome <= 0 || Felicidade <= 0 || Alegria <= 0 || Energia <= 0 || Saude <= 0;
     }
+    public void Alimentar()
+    {
+        Fome = Math.Min(Fome + AttributeIncrement, MaxValue);
+        Energia = Math.Max(Energia - EnergyDecrementFood, MinValue);
+    }
+
+    public void DarCarinho()
+    {
+        Felicidade = Math.Min(Felicidade + AttributeIncrement, MaxValue);
+        Energia = Math.Max(Energia - EnergyDecrementAffection, MinValue);
+    }
+
+    public void Brincar()
+    {
+        Alegria = Math.Min(Alegria + AttributeIncrement, MaxValue);
+        Energia = Math.Max(Energia - EnergyDecrementPlay, MinValue);
+    }
+
+    public void DarRemedio()
+    {
+        Saude = Math.Min(Saude + AttributeIncrement, MaxValue);
+        Energia = Math.Max(Energia - EnergyDecrementMedicine, MinValue);
+    }
+
+    public void AtualizarEstado()
+    {
+        Fome = Math.Max(Fome - AttributeDecrement, MinValue);
+        Felicidade = Math.Max(Felicidade - AttributeDecrement, MinValue);
+        Alegria = Math.Max(Alegria - AttributeDecrement, MinValue);
+        Energia = Math.Max(Energia - AttributeDecrement, MinValue);
+        VerificarSaude();
+    }
+    
+    public void Dormir() => Energia = MaxValue;
+
+    public void Envelhecer() => Idade++;
 
     private void VerificarSaude()
     {
         var somaAtributos = Fome + Felicidade + Alegria + Energia;
 
-        if (somaAtributos >= MaxAttributeSum)
-        {
-            Saude += AttributeIncrement;
-            Saude = Math.Min(Saude, MaxValue);
-        }
-        else
-        {
-            Saude -= AttributeDecrement;
-            Saude = Math.Max(Saude, MinValue);
-        }
+        Saude = somaAtributos >= MaxAttributeSum ? Math.Min(Saude + AttributeIncrement, MaxValue) : Math.Max(Saude - AttributeDecrement, MinValue);
     }
 
     public void ExibirEstado()
     {
-        Console.WriteLine("Nome: " + Nome);
-        Console.WriteLine("Idade: " + Idade);
-        Console.WriteLine("Fome: " + Fome);
-        Console.WriteLine("Felicidade: " + Felicidade);
-        Console.WriteLine("Saúde: " + Saude);
-        Console.WriteLine("Alegria: " + Alegria);
-        Console.WriteLine("Energia: " + Energia);
-        Console.WriteLine("Inteligência: " + Inteligencia);
+        Console.WriteLine($"Nome: {Nome}");
+        Console.WriteLine($"Idade: {Idade}");
+        Console.WriteLine($"Fome: {Fome}");
+        Console.WriteLine($"Felicidade: {Felicidade}");
+        Console.WriteLine($"Saúde: {Saude}");
+        Console.WriteLine($"Alegria: {Alegria}");
+        Console.WriteLine($"Energia: {Energia}");
+        Console.WriteLine($"Inteligência: {Inteligencia}");
     }
 
     public static void ExibirTamagotchi()
     {
         Console.WriteLine(@"
 
-           .^._.^.
-           | @ @ |
-          ( '---' )
-         .'___V___'.
-         | /     \ |
-           \ /-\ /
-            V   V
-       
-        ");
+               .^._.^.
+               | @ @ |
+              ( '---' )
+             .'___V___'.
+             | /     \ |
+               \ /-\ /
+                V   V
+           
+            ");
     }
-    
+
     public static void ExibirTamagotchiMorto()
     {
         Console.WriteLine(@"
 
-           .^._.^.
-           | X X |
-          ( '---' )
-         .'___V___'.
-         | /     \ |
-           \ /-\ /
-            V   V
-       
-        ");
+               .^._.^.
+               | X X |
+              ( '---' )
+             .'___V___'.
+             | /     \ |
+               \ /-\ /
+                V   V
+           
+            ");
     }
 }
+
+
+    

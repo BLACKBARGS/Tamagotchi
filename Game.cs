@@ -80,7 +80,7 @@ internal class Game
             {
                 Tamagotchi.ExibirTamagotchiMorto();
                 Console.WriteLine("Seu Tamagotchi morreu! ");
-                jogando = false;
+                break;
             }
 
             Console.WriteLine("Pressione qualquer tecla para continuar...");
@@ -88,8 +88,8 @@ internal class Game
         }
 
         Console.WriteLine("Obrigado por jogar o Tamagotchi!");
+        
     }
-
     private static string? ExibirMenu()
     {
         Console.WriteLine();
