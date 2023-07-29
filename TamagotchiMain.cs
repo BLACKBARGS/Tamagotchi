@@ -1,4 +1,5 @@
-﻿namespace Tamagotchi;
+﻿using Tamagotchi.GameLogic;
+namespace Tamagotchi;
 
 internal abstract class TamagotchiMain
 {
@@ -13,7 +14,7 @@ internal abstract class TamagotchiMain
             return;
         }
 
-        var tamagotchi = new Tamagotchi(nome);
+        var tamagotchi = new TamagotchiPet(nome);
         var game = new Game(tamagotchi);
         game.Run();
     }

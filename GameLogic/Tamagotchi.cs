@@ -1,9 +1,9 @@
 using System.Timers;
 using Timer = System.Timers.Timer;
 
-namespace Tamagotchi;
+namespace Tamagotchi.GameLogic;
 
-public class Tamagotchi
+public class TamagotchiPet
 {
     public string Version { get; private set; } = "1.1";
     private const int MaxValue = 100;
@@ -32,7 +32,7 @@ public class Tamagotchi
     private readonly Timer _timerAtualizacao;
     private readonly bool _estaMorto;
 
-    public Tamagotchi(string nome)
+    public TamagotchiPet(string nome)
     {
         Nome = nome;
         Fome = MaxValue;
