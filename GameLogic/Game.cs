@@ -1,9 +1,9 @@
-namespace Tamagotchi;
+namespace Tamagotchi.GameLogic;
 
 internal class Game
 {
-    private readonly Tamagotchi _tamagotchi;
-    public Game(Tamagotchi tamagotchi)
+    private readonly TamagotchiPet _tamagotchi;
+    public Game(TamagotchiPet tamagotchi)
     {
         this._tamagotchi = tamagotchi;
     }
@@ -15,7 +15,7 @@ internal class Game
         while (jogando)
         {
             Console.Clear();
-            Tamagotchi.ExibirTamagotchi();
+            TamagotchiPet.ExibirTamagotchi();
             _tamagotchi.ExibirEstado();
 
             if (_tamagotchi.EstaTriste())
@@ -78,7 +78,7 @@ internal class Game
 
             if (_tamagotchi.VerificarMorte())
             {
-                Tamagotchi.ExibirTamagotchiMorto();
+                TamagotchiPet.ExibirTamagotchiMorto();
                 Console.WriteLine("Seu Tamagotchi morreu! ");
                 break;
             }
