@@ -1,5 +1,7 @@
 using System.Timers;
+using System.Text.Json;
 using Timer = System.Timers.Timer;
+using System.Text.Json.Serialization;
 
 namespace Tamagotchi.GameLogic;
 
@@ -20,18 +22,25 @@ public class TamagotchiPet
     private const int SleepInterval = 10000;
     private const int TimerInterval = 10000;
 
-    private string Nome { get; set; }
-    private int Fome { get; set; }
-    private int Felicidade { get; set; }
-    private int Alegria { get; set; }
-    private int Idade { get; set; }
-    private int Energia { get; set; }
-    private int Saude { get; set; }
-    private int Inteligencia { get; set; }
+    [JsonPropertyName("Nome")]
+    public string Nome { get; private set; }
+    [JsonPropertyName("Fome")]
+    public int Fome { get; private set; }
+    [JsonPropertyName("Felicidade")]
+    public int Felicidade { get; private set; }
+    [JsonPropertyName("Alegria")]
+    public int Alegria { get; private set; }
+    [JsonPropertyName("Idade")]
+    public int Idade { get; private set; }
+    [JsonPropertyName("Energia")]
+    public int Energia { get; private set; }
+    [JsonPropertyName("Saude")]
+    public int Saude { get; private set; }
+    [JsonPropertyName("Inteligencia")]
+    public int Inteligencia { get; private set; }
 
     private readonly Timer _timerAtualizacao;
     private readonly bool _estaMorto;
-
     public TamagotchiPet(string nome)
     {
         Nome = nome;
