@@ -1,11 +1,11 @@
 using System.Timers;
 using Timer = System.Timers.Timer;
+using System.Text.Json.Serialization;
 
 namespace Tamagotchi.GameLogic;
 
 public class TamagotchiPet
 {
-    public string Version { get; private set; } = "1.1";
     private const int MaxValue = 100;
     private const int MinValue = 0;
     private const int MaxAttributeSum = 100;
@@ -19,15 +19,30 @@ public class TamagotchiPet
     private const int EnergyDecrementMedicine = 2;
     private const int SleepInterval = 10000;
     private const int TimerInterval = 10000;
+    
+    [JsonPropertyName("Nome")]
+    public string Nome { get; private set; }
 
-    private string Nome { get; set; }
-    private int Fome { get; set; }
-    private int Felicidade { get; set; }
-    private int Alegria { get; set; }
-    private int Idade { get; set; }
-    private int Energia { get; set; }
-    private int Saude { get; set; }
-    private int Inteligencia { get; set; }
+    [JsonPropertyName("Fome")]
+    public int Fome { get; private set; }
+
+    [JsonPropertyName("Felicidade")]
+    public int Felicidade { get; private set; }
+
+    [JsonPropertyName("Alegria")]
+    public int Alegria { get; private set; }
+
+    [JsonPropertyName("Idade")]
+    public int Idade { get; private set; }
+
+    [JsonPropertyName("Energia")]
+    public int Energia { get; private set; }
+
+    [JsonPropertyName("Saude")]
+    public int Saude { get; private set; }
+    
+    [JsonPropertyName("Inteligencia")]
+    public int Inteligencia { get; private set; }
 
     private readonly Timer _timerAtualizacao;
     private readonly bool _estaMorto;
@@ -42,6 +57,7 @@ public class TamagotchiPet
         Energia = MaxValue;
         Saude = MaxValue;
         Inteligencia = 25;
+
         _estaMorto = false;
         _timerAtualizacao = new Timer(TimerInterval);
         _timerAtualizacao.Elapsed += AtualizarTamagotchi;
@@ -76,31 +92,15 @@ public class TamagotchiPet
     {
         Inteligencia = Math.Min(Inteligencia + IntelligenceIncrement, MaxIntelligence);
     }
-    
-    public bool EstaTriste() 
-    {
-        return Fome < 15;
-    }
 
-    public bool EstaEntediado()
-    {
-        return Felicidade < 20;
-    }
+    public bool EstaTriste => Fome < 15;
+    public bool EstaEntediado => Felicidade < 20;
+    public bool EstaDoente => Saude < 10;
+    public bool EstaCansado => Energia < 25;
+    public void Dormir() => Energia = MaxValue;
+    public void Envelhecer() => Idade++;
+    public bool VerificarMorte => Fome <= 0 || Felicidade <= 0 || Alegria <= 0 || Energia <= 0 || Saude <= 0;
 
-    public bool EstaDoente()
-    {
-        return Saude < 10;
-    }
-
-    public bool EstaCansado()
-    {
-        return Energia < 25;
-    }
-
-    public bool VerificarMorte()
-    {
-        return Fome <= 0 || Felicidade <= 0 || Alegria <= 0 || Energia <= 0 || Saude <= 0;
-    }
     public void Alimentar()
     {
         Fome = Math.Min(Fome + AttributeIncrement, MaxValue);
@@ -134,10 +134,6 @@ public class TamagotchiPet
         VerificarSaude();
     }
     
-    public void Dormir() => Energia = MaxValue;
-
-    public void Envelhecer() => Idade++;
-
     private void VerificarSaude()
     {
         var somaAtributos = Fome + Felicidade + Alegria + Energia;
@@ -187,6 +183,3 @@ public class TamagotchiPet
             ");
     }
 }
-
-
-    
